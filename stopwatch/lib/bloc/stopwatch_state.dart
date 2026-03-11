@@ -1,32 +1,29 @@
 import 'package:equatable/equatable.dart';
+import '../models/stopwatch_model.dart';
 
 class StopwatchState extends Equatable {
 
-  final int milliseconds;
-  final bool isRunning;
+  final StopwatchModel stopwatch;
 
-  const StopwatchState({
-    required this.milliseconds,
-    required this.isRunning,
-  });
+  const StopwatchState({required this.stopwatch});
 
   factory StopwatchState.initial() {
     return const StopwatchState(
-      milliseconds: 0,
-      isRunning: false,
+      stopwatch: StopwatchModel(
+        milliseconds: 0,
+        isRunning: false,
+      ),
     );
   }
 
   StopwatchState copyWith({
-    int? milliseconds,
-    bool? isRunning,
+    StopwatchModel? stopwatch,
   }) {
     return StopwatchState(
-      milliseconds: milliseconds ?? this.milliseconds,
-      isRunning: isRunning ?? this.isRunning,
+      stopwatch: stopwatch ?? this.stopwatch,
     );
   }
 
   @override
-  List<Object?> get props => [milliseconds, isRunning];
+  List<Object?> get props => [stopwatch];
 }

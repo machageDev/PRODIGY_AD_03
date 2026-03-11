@@ -32,13 +32,15 @@ class StopwatchScreen extends StatelessWidget {
       body: BlocBuilder<StopwatchBloc, StopwatchState>(
         builder: (context, state) {
 
+          final stopwatch = state.stopwatch;
+
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
                 Text(
-                  formatTime(state.milliseconds),
+                  formatTime(stopwatch.milliseconds),
                   style: const TextStyle(
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
@@ -52,7 +54,7 @@ class StopwatchScreen extends StatelessWidget {
                   children: [
 
                     ElevatedButton(
-                      onPressed: state.isRunning
+                      onPressed: stopwatch.isRunning
                           ? null
                           : () => context.read<StopwatchBloc>().add(StartStopwatch()),
                       child: const Text("Start"),
@@ -61,7 +63,7 @@ class StopwatchScreen extends StatelessWidget {
                     const SizedBox(width: 15),
 
                     ElevatedButton(
-                      onPressed: state.isRunning
+                      onPressed: stopwatch.isRunning
                           ? () => context.read<StopwatchBloc>().add(PauseStopwatch())
                           : null,
                       child: const Text("Pause"),

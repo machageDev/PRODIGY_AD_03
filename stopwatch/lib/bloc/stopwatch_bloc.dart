@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stopwatch/bloc/stopwatc_events.dart';
 import 'stopwatch_state.dart';
+import '../models/stopwatch_model.dart';
 
 class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
 
@@ -17,30 +18,56 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
 
   void _onStart(StartStopwatch event, Emitter<StopwatchState> emit) {
 
-    if (state.isRunning) return;
+    if (state.stopwatch.isRunning) return;
 
     _timer = Timer.periodic(
       const Duration(milliseconds: 10),
       (timer) {
-        add(Tick(state.milliseconds + 10));
+        add(Tick(state.stopwatch.milliseconds + 10));
       },
     );
 
-    emit(state.copyWith(isRunning: true));
+    emit(
+      state.copyWith(
+        stopwatch: state.stopwatch.copyWith(isRunning: true),
+      ),
+    );
   }
 
   void _onPause(PauseStopwatch event, Emitter<StopwatchState> emit) {
+
     _timer?.cancel();
-    emit(state.copyWith(isRunning: false));
+
+    emit(
+      state.copyWith(
+        stopwatch: state.stopwatch.copyWith(isRunning: false),
+      ),
+    );
   }
 
   void _onReset(ResetStopwatch event, Emitter<StopwatchState> emit) {
+
     _timer?.cancel();
-    emit(const StopwatchState(milliseconds: 0, isRunning: false));
+
+    emit(
+      state.copyWith(
+        stopwatch: const StopwatchModel(
+          milliseconds: 0,
+          isRunning: false,
+        ),
+      ),
+    );
   }
 
   void _onTick(Tick event, Emitter<StopwatchState> emit) {
-    emit(state.copyWith(milliseconds: event.milliseconds));
+
+    emit(
+      state.copyWith(
+        stopwatch: state.stopwatch.copyWith(
+          milliseconds: event.milliseconds,
+        ),
+      ),
+    );
   }
 
   @override
